@@ -3,8 +3,8 @@
 # - 
 
 perform_simulation = function(N, p, dependence=F, include.shapr=T){
-  data = generate_data(N, p, dependence=dependence)
-  model = train.model(data)
+  train.data = generate_data(N, p, dependence=dependence)
+  model = lm(train.data[2] ~ ., data = train.data[1])
   true.shap = compute.shap(model, data)
   results = array(NA, dim = c(2, p))
   if(include.shapr){
