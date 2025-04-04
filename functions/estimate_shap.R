@@ -1,5 +1,5 @@
 
-compute.shap <- function(data, model , include.shapr=T){
+compute.shap <- function(model, data, include.shapr=T){
   true_shap <- compute.shap(model, data)
 
   mae <- list()
