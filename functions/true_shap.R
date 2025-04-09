@@ -1,6 +1,6 @@
 library(gtools)
 
-compute.shap <- function(model, test_data, train_data){
+true_shap <- function(model, test_data, train_data){
   M <- ncol(test_data)
   
   v <- function(S){
@@ -9,9 +9,9 @@ compute.shap <- function(model, test_data, train_data){
   
   phi <- function(i){
     phi_i <- 0
-    others <- setdiff(test_data, X[i])
+    others <- setdiff(test_data, test_data[i])
     
-    # Må endre store deler av koden ift subset av indekser og subset av selve dataen
+    # Må endre store deler av koden ift subset av indekser vs subset av selve dataen
     for (k in 1:M-1) {
       subsets_k <- combn(others, k, simplify = FALSE)
       
