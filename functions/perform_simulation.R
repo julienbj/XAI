@@ -1,15 +1,30 @@
-source("generate_data.R")
-source("compute_shap.R")
+source("functions/generate_data.R")
+source("functions/compute_shap.R")
 
-perform.simulation <- function(N=1000, M, dependence=F, include.shapr=T){
-  train_data <- generate.data(N, M, dependence = dependence)
-  test_data <- generate.data(500, M, dependence = dependence)
+perform_simulation <- function(N=1000, M, dependence=F, include.shapr=T){
+  train <- generate_data(N, M, dependence = dependence)
+  test <- generate_data(500, M, dependence = dependence)
   
-  model = lm(y ~ ., data = train_data) 
-  predictions <- predict(model, newdata = test_data)
+  X_test <- test$data[, 1:M]
   
-  true_shap <- true_shap(model=model, test_data = test_data, train_data=train_data)
-  results <- estimate_shap(model=model, train_data, include.shapr=include.shapr, true_shap=true_shap)
+  model = lm(y ~ ., data = train$data) 
+  true_shap <- compute_shap(model=model, test_data = X_test, train=train, dependence=dependence)
   
-  return(results)
+  mae <- list()
+  
+  if (include.shapr) {
+    library(shapr)
+    
+    explainer <- shapr(train$data, model)
+    shapr_vals <- explain(X_test, explainer, approach = "empirical")$shapley_values
+    shapr_vals <- shapr_vals[, colnames(X_test)]
+    
+    colnames(true_shap) <- colnames(shapr_vals)
+    
+    mae$shapr <- mean(abs(as.matrix(shapr_vals) - true_shap))
+  }
+  
+  return(mae)
 }
+
+perform_simulation(M=5)
