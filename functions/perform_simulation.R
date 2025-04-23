@@ -1,5 +1,6 @@
 source("functions/generate_data.R")
 source("functions/compute_shap.R")
+source("functions/plot_results.R")
 
 perform_simulation <- function(N=1000, M, dependence=F, include.shapr=T){
   train <- generate_data(N, M, dependence = dependence)
@@ -10,7 +11,7 @@ perform_simulation <- function(N=1000, M, dependence=F, include.shapr=T){
 
   model = lm(y ~ ., data = train$data)
   true_shap <- compute_shap(model=model, test_data = X_test, train=train, dependence=dependence)
-
+  
   mae <- list()
 
   if (include.shapr) {
@@ -32,7 +33,8 @@ perform_simulation <- function(N=1000, M, dependence=F, include.shapr=T){
     mae$shapr <- mean(abs(shapr_matrix - true_shap))
   }
 
-  return(mae)
+  return(list(true_shap = true_shap, mae = mae))
 }
 
-perform_simulation(M=5)
+results <- perform_simulation(M=5)
+plot_results(results)
