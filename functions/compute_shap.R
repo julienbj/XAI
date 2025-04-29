@@ -1,6 +1,6 @@
 library(gtools)
 
-compute_shap <- function(model,test_data, train, dependence=F){
+compute_shap <- function(model,test_data, train, rho=0.0){
   M <- ncol(test_data)
   N <- nrow(test_data)
   
@@ -8,9 +8,35 @@ compute_shap <- function(model,test_data, train, dependence=F){
   beta <- train$beta
   intercept <- train$intercept
   
-  if(dependence){
-    v <- function(S, x){
-      ...
+  if(rho!=0.0){
+    v <- function(S, x) {
+      # No features known ➜ unconditional expectation
+      if (length(S) == 0) {
+        return(intercept + sum(beta * mu))
+      }
+      
+      known    <- sort(S)
+      unknown  <- setdiff(1:M, known)
+      
+      Sigma <- matrix(rho, M, M)
+      diag(Sigma) <- 1                     # unit variances
+      
+      # Conditional means for the unknown block
+      if (length(unknown) > 0) {
+        Sigma_uk_k <- Sigma[unknown, known,  drop = FALSE]
+        Sigma_k_k  <- Sigma[known,   known,  drop = FALSE]
+        
+        mu_cond <- as.vector(
+          mu[unknown] + Sigma_uk_k %*% solve(Sigma_k_k) %*% (x[known] - mu[known])
+        )
+      } else {
+        mu_cond <- numeric(0) 
+      }
+      
+      known_contrib   <- sum(beta[known]   * x[known])
+      unknown_contrib <- sum(beta[unknown] * mu_cond)
+      
+      return(intercept + known_contrib + unknown_contrib)
     }
   } else{
     v <- function(S, x){
