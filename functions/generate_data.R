@@ -18,6 +18,3 @@ generate_data <- function(N, M=5, beta=c(1, 3, 1, 2, 0.5), intercept=5, rho=0.0)
   
   return(list(data=data, intercept=intercept, beta=beta))
 }
- 
-# test <- generate_data(10, dependence=TRUE)
-# print(test$data[, 1:5]) 

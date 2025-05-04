@@ -1,6 +1,6 @@
 library(gtools)
 
-compute_shap <- function(model,test_data, train, rho=0.0){
+compute_shap <- function(model, test_data, train, rho=0.0){
   M <- ncol(test_data)
   N <- nrow(test_data)
   

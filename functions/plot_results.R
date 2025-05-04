@@ -3,7 +3,7 @@ library(ggbeeswarm)
 library(reshape2)
 source("colors.R")
 
-plot_results_list <- function(results, rho_values=c(0.0, 0.3, 0.7, 0.9)) {
+plot_results <- function(results, rho_values=c(0.0, 0.3, 0.7, 0.9)) {
   my_colors = c(uioblue1, color2, uioblue2, color4, uioblue3)
   
   par(mfrow = c(2, 2),
@@ -37,33 +37,15 @@ plot_results_list <- function(results, rho_values=c(0.0, 0.3, 0.7, 0.9)) {
   par(mfrow = c(1, 1))
 }
 
-# plot_results_single <- function(results, rho_val){
-#   my_colors = c(uioblue1, color2, uioblue2, color4, uioblue3)
-#   
-#   boxplot(results, main = bquote(paste(rho, " = ", rho_val)), 
-#           xlab = "Mean Absolute Error", ylab = "Methods",
-#           col = my_colors,
-#           border = "black",
-#           horizontal = TRUE, 
-#           las = 1)
-# }
+plot_results_single <- function(results, rho_val){
+  my_colors = c(uioblue1, color2, uioblue2, color4, uioblue3)
 
-# test_list <- list()
-# test_rhos <- list()
-# 
-# for (i in 1:4) {
-#   rho_test <- 0.1*i
-#   name <- paste0("rho_", i)
-#   
-#   test_list[[name]] <- list(
-#     independence = rnorm(10, mean = i),
-#     empirical = rnorm(10, mean = i + 1),
-#     gaussian = rnorm(10, mean = i + 2),
-#     copula = rnorm(10, mean = i + 3), 
-#     vaeac = rnorm(10, mean= i + 4)
-#   )
-#   
-#   test_rhos <- c(test_rhos, rho_test)
-# }
-# 
-# plot_results(results=test_list, rho_values=test_rhos)
+  boxplot(results, main = bquote(paste(rho, " = ", rho_val)),
+          xlab = "Mean Absolute Error", ylab = "Methods",
+          col = my_colors,
+          border = "black",
+          horizontal = TRUE,
+          las = 1)
+}
+
+

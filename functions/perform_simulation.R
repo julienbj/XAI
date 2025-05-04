@@ -4,7 +4,7 @@ source("functions/plot_results.R")
 
 library(shapr)
 
-perform_simulation <- function(runs=30, N=1000, M=5, rho=0.0, incl.independence=T, incl.empirical=T, incl.gaussian=T, incl.copula=T, incl.vaeac=T){
+perform_simulation <- function(runs=30, N=1000, M=5, rho=0.0, incl.independence=T, incl.empirical=T, incl.gaussian=T, incl.copula=T, incl.vaeac=F){
   methods <- c()
   if (incl.independence) methods <- c(methods, "independence")
   if (incl.empirical)    methods <- c(methods, "empirical")
@@ -53,16 +53,14 @@ perform_simulation <- function(runs=30, N=1000, M=5, rho=0.0, incl.independence=
     }
     
     for (method in methods) {
-      print("inne")
       tm <- system.time(res <- run_shapr(method))
-      print("runnet")
       mae[[method]]      <- c(mae[[method]], res)
-      print("lagret")
       time_sum[[method]] <- time_sum[[method]] + unname(tm["elapsed"])
-      cat("hei ", method, "\n")
     }
   }
-  return(list(mae=mae, time_sum=time_sum))
+  
+  avg_time <- mapply(`/`, time_sum, time_n)
+  return(list(mae=mae, avg_time=avg_time))
 }
 
 # results <- list()
@@ -74,4 +72,5 @@ perform_simulation <- function(runs=30, N=1000, M=5, rho=0.0, incl.independence=
 # plot_results(results)
 
 
-testtest <- perform_simulation(runs=1, rho=0.5)
+testtest <- perform_simulation(runs=1, rho=0.5, incl.vaeac = F)
+testtest2 <- perform_simulation(runs=10, rho=0.5, incl.vaeac = T)
