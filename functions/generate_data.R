@@ -1,6 +1,9 @@
 library(mvtnorm)
 
-generate_data <- function(N, M=5, beta=c(1, 3, 1, 2, 0.5), intercept=5, rho=0.0){
+generate_data <- function(N, betas, rho=0.0){
+  intercept <- betas[1]
+  betas <- betas[-1]
+  M <- length(betas)
   mu <- rep(0, M)
   
   if (rho!=0.0){
@@ -11,10 +14,10 @@ generate_data <- function(N, M=5, beta=c(1, 3, 1, 2, 0.5), intercept=5, rho=0.0)
   }
   
   X <- rmvnorm(n = N, sigma = Sigma)
-  y <- intercept + X %*% beta + rnorm(N)
+  y <- intercept + X %*% betas + rnorm(N)
   
   data <- as.data.frame(X)
   data$y <- y
   
-  return(list(data=data, intercept=intercept, beta=beta))
+  return(data)
 }
