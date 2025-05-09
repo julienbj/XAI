@@ -3,7 +3,7 @@ source("functions/compute_shap.R")
 
 library(shapr)
 
-run_sim <- function(betas, rhos=c(0, 0.1, 0.3, 0.5, 0.7, 0.9), runs=50, N=1000, methods=c("independence", "empirical", "gaussian", "copula"), filename=""){
+run_simulation <- function(betas, rhos=c(0, 0.1, 0.3, 0.5, 0.7, 0.9), runs=50, N=1000, methods=c("independence", "empirical", "gaussian", "copula"), filename=""){
   result <- list()
   
   for(rho_i in rhos){
