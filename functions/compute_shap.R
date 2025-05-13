@@ -9,15 +9,13 @@ compute_shap <- function(model, test_data, train_data, rho=0.0){
   
   if(rho!=0.0){
     v <- function(S, x) {
-      # No features known ➜ unconditional expectation
       if (length(S) == 0) {
         return(intercept + sum(betas * mu))
       }
       
       Sigma <- matrix(rho, M, M)
-      diag(Sigma) <- 1                     # unit variances
+      diag(Sigma) <- 1                  
       
-      # Conditional means for the unknown block
       if (length(S) < M) {
         Sigma_uk_k <- Sigma[-S, S,  drop = FALSE]
         Sigma_k_k  <- Sigma[S,   S,  drop = FALSE]

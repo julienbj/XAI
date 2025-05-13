@@ -3,12 +3,12 @@ source("functions/compute_shap.R")
 
 library(shapr)
 
-run_simulation <- function(betas, rhos=c(0, 0.1, 0.3, 0.5, 0.7, 0.9), runs=50, N=1000, methods=c("independence", "empirical", "gaussian", "copula"), filename=""){
+run_simulation <- function(betas, rhos=c(0, 0.1, 0.3, 0.5, 0.7, 0.9), runs=50, N1=1000, N2=500, methods=c("independence", "empirical", "gaussian", "copula"), filename=""){
   result <- list()
   
   for(rho_i in rhos){
     cat("Running rho =", rho_i, "\n")
-    result[[length(result) + 1]] <- perform_simulation(runs=runs, betas=betas, rho=rho_i, N=N, methods=methods)
+    result[[length(result) + 1]] <- perform_simulation(runs=runs, betas=betas, rho=rho_i, N1=N1, N2=N2, methods=methods)
   }
   
   if(nzchar(filename)){
@@ -19,7 +19,7 @@ run_simulation <- function(betas, rhos=c(0, 0.1, 0.3, 0.5, 0.7, 0.9), runs=50, N
   }
 }
 
-perform_simulation <- function(runs, N, rho, betas, methods){
+perform_simulation <- function(runs, N1, N2, rho, betas, methods){
   mae      <- setNames(vector("list", length(methods)), methods)
   elapsed_times <- setNames(vector("list", length(methods)), methods)
   
@@ -27,11 +27,11 @@ perform_simulation <- function(runs, N, rho, betas, methods){
   
   for(i in 1:runs){
     cat("Starting run no.", i, "/", runs, ", rho = ", rho, "\n")
-    train <- generate_data(N, rho = rho, betas=betas)
-    test <- generate_data(500, rho = rho, betas=betas)
-  
+    
+    train <- generate_data(N1, betas=betas, rho = rho)
     X_train <- train[1:M]
-    X_test <- test[1:M]
+    
+    X_test <- generate_data(N2, betas=betas, rho = rho, incl_y=F)
   
     model = lm(y ~ ., data = train)
     true_shap <- compute_shap(model=model, test_data = X_test, train_data=X_train, rho=rho)
