@@ -17,9 +17,9 @@ Through a simulation study, we compare the performance of different estimation m
 - `work_doc.R` - File used for running simulations, can be altered to run new situations
 - `thinkinng_inside_the_box.pdf` – Final report submitted for the STK-MAT2011 project
 
-##Report
+## Report
 You can read the full report in the file:
-thinkinng_inside_the_box.pdf
+`thinkinng_inside_the_box.pdf`
 
-##License
+## License
 This project is shared for educational purposes and is part of a university course project. Please cite appropriately if used or referenced.
