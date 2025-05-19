@@ -1,3 +1,4 @@
+#Colors according to UiO graphics
 uioblue1 <- rgb(62/255, 49/255, 214/255)     
 color2 <- rgb(98/255, 106/255, 230/255)      
 uioblue2 <- rgb(134/255, 164/255, 247/255)   

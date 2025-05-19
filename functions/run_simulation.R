@@ -3,6 +3,7 @@ source("functions/compute_shap.R")
 
 library(shapr)
 
+#Function for running simulations of different rhos, saves to file if filename is given
 run_simulation <- function(betas, rhos=c(0, 0.1, 0.3, 0.5, 0.7, 0.9), runs=50, N1=1000, N2=500, methods=c("independence", "empirical", "gaussian", "copula"), filename=""){
   result <- list()
   
@@ -19,6 +20,7 @@ run_simulation <- function(betas, rhos=c(0, 0.1, 0.3, 0.5, 0.7, 0.9), runs=50, N
   }
 }
 
+#Function performing the actual simulations
 perform_simulation <- function(runs, N1, N2, rho, betas, methods){
   mae      <- setNames(vector("list", length(methods)), methods)
   elapsed_times <- setNames(vector("list", length(methods)), methods)
@@ -63,13 +65,12 @@ perform_simulation <- function(runs, N1, N2, rho, betas, methods){
     }
     
     for (method in methods) {
-      tm <- system.time(res <- run_shapr(method))
-      mae[[method]]      <- c(mae[[method]], res)
+      tm <- system.time(res <- run_shapr(method))  
+      mae[[method]]      <- c(mae[[method]], res) 
       elapsed_times[[method]] <- c(elapsed_times[[method]], unname(tm["elapsed"]))
     }
     
   }
-  
   return(list(mae=mae, times=elapsed_times))
 }
 

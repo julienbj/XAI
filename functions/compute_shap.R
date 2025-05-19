@@ -1,4 +1,4 @@
-
+#Function for computing the true shapley values of a linear model
 compute_shap <- function(model, test_data, train_data, rho=0.0){
   M <- ncol(test_data)
   N <- nrow(test_data)
@@ -7,6 +7,7 @@ compute_shap <- function(model, test_data, train_data, rho=0.0){
   betas <- coef(model)[names(coef(model)) != "(Intercept)"]
   intercept <- coef(model)["(Intercept)"]  
   
+  #Defining contribution function based on independent/dependent features
   if(rho!=0.0){
     v <- function(S, x) {
       if (length(S) == 0) {
@@ -43,7 +44,8 @@ compute_shap <- function(model, test_data, train_data, rho=0.0){
       return(intercept + known_contrib + unknown_contrib)
     }
   }
-
+  
+  #The "actual" shapley value functions
   phi <- function(i, x){
     phi_i <- 0
     others <- setdiff(1:M, i)
@@ -66,6 +68,7 @@ compute_shap <- function(model, test_data, train_data, rho=0.0){
   shap_matrix <- matrix(0, nrow = N, ncol = M)
   colnames(shap_matrix) <- colnames(test_data)
   
+  #Run over all observations in test-data
   for (n in 1:N) {
     x <- as.numeric(test_data[n, ])
     for (j in 1:M) {

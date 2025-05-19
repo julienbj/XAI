@@ -1,5 +1,7 @@
 library(mvtnorm)
 
+#Function for generating Gaussian data with given dependence
+#If not specified otherwise a linear response is included
 generate_data <- function(N, betas, rho, incl_y=T){
   intercept <- betas[1]
   betas <- betas[-1]
