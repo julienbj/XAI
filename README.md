@@ -15,11 +15,11 @@ Through a simulation study, we compare the performance of different estimation m
 - `functions/` – Source code for computing and evaluating Shapley values
 - `results/` – Results and plots used in the report
 - `work_doc.R` - File used for running simulations, can be altered to run new situations
-- `thinkinng_inside_the_box.pdf` – Final report submitted for the STK-MAT2011 project
+- `thinking_inside_the_box.pdf` – Final report submitted for the STK-MAT2011 project
 
 ## Report
 You can read the full report in the file:
-`thinkinng_inside_the_box.pdf`
+`thinking_inside_the_box.pdf`
 
 ## License
 This project is shared for educational purposes and is part of a university course project. Please cite appropriately if used or referenced.
