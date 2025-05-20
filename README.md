@@ -1,6 +1,6 @@
-# Thinking Inside the Box: Shapley Values for Explainable AI
+# Thinking Inside the Box: Explaining AI predictions using Shapley values
 
-This repository contains the source code and materials for the report titled **"Thinking Inside the Box: Shapley Values for Explainable AI"**, created as part of the project coursework for **STK-MAT2011** at the **University of Oslo**.
+This repository contains the source code and materials for the report titled **"Thinking Inside the Box: Explaining AI predictions using Shapley values"**, created as part of the project coursework for **STK-MAT2011** at the **University of Oslo**.
 
 ## Abstract
 
